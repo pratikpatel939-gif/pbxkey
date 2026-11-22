@@ -1,0 +1,9 @@
+#!/bin/bash
+# OLD FreePBX 15 server: authorize the pbx-ops GitHub Actions key for root.
+# Adds the PUBLIC key only; does not change any SSH settings.
+KEY='ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMk9PHMZlhUkjEL9CqP0d+Dgq8s4oBsJ+dvsSrohckVl pbx-ops-github'
+mkdir -p /root/.ssh && chmod 700 /root/.ssh
+touch /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys
+grep -qF "$KEY" /root/.ssh/authorized_keys || echo "$KEY" >> /root/.ssh/authorized_keys
+command -v restorecon >/dev/null && restorecon -R /root/.ssh
+echo "OLD-KEY-OK"
